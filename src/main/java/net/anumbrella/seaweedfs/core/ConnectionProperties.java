@@ -43,6 +43,8 @@ public class ConnectionProperties {
     private int fileStreamCacheEntries;
     private long fileStreamCacheSize;
     private HttpCacheStorage fileStreamCacheStorage;
+    private int readTimeout;
+    private int connectionRequestTimeout;
 
     private ConnectionProperties(Builder builder) {
         this.host = builder.host;
@@ -59,6 +61,8 @@ public class ConnectionProperties {
         this.fileStreamCacheEntries = builder.fileStreamCacheEntries;
         this.fileStreamCacheSize = builder.fileStreamCacheSize;
         this.fileStreamCacheStorage = builder.fileStreamCacheStorage;
+        this.readTimeout = builder.readTimeout;
+        this.connectionRequestTimeout = builder.connectionRequestTimeout;
     }
 
     public String getHost() {
@@ -117,6 +121,14 @@ public class ConnectionProperties {
         return fileStreamCacheStorage;
     }
 
+    public int getReadTimeout() {
+        return readTimeout;
+    }
+
+    public int getConnectionRequestTimeout() {
+        return connectionRequestTimeout;
+    }
+
     public static class Builder {
         /**
          * seaweedfs master地址，默认localhost
@@ -158,6 +170,9 @@ public class ConnectionProperties {
         private long fileStreamCacheSize = 8192;
         private HttpCacheStorage fileStreamCacheStorage = null;
 
+        private int readTimeout=-1;
+        private int connectionRequestTimeout=-1;
+
         public Builder() {
         }
 
@@ -173,6 +188,14 @@ public class ConnectionProperties {
 
         public Builder connectionTimeout(int connectionTimeout) {
             this.connectionTimeout = connectionTimeout;
+            return this;
+        }
+        public Builder readTimeout(int readTimeout) {
+            this.readTimeout = readTimeout;
+            return this;
+        }
+        public Builder connectionRequestTimeout(int connectionRequestTimeout) {
+            this.connectionRequestTimeout = connectionRequestTimeout;
             return this;
         }
 

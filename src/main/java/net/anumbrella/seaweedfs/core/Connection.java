@@ -50,6 +50,8 @@ public class Connection {
     private String leaderUrl;
     private long statusExpiry;
     private int connectionTimeout;
+    private int readTimeout;
+    private int connectionRequestTimeout;
     private boolean connectionClose = true;
     private boolean enableFileStreamCache;
     private int fileStreamCacheEntries;
@@ -66,15 +68,18 @@ public class Connection {
     private PoolingHttpClientConnectionManager clientConnectionManager;
     private IdleConnectionMonitorThread idleConnectionMonitorThread;
     private CloseableHttpClient httpClient;
+    private CloseableHttpClient statusHttpClient;
     private CacheManager cacheManager = null;
 
-    public Connection(String leaderUrl, int connectionTimeout, long statusExpiry, long idleConnectionExpiry,
+    public Connection(String leaderUrl, int connectionTimeout,int readTimeout,int connectionRequestTimeout, long statusExpiry, long idleConnectionExpiry,
             int maxConnection, int maxConnectionsPreRoute, boolean enableLookupVolumeCache,
             long lookupVolumeCacheExpiry, int lookupVolumeCacheEntries, boolean enableFileStreamCache,
             int fileStreamCacheEntries, long fileStreamCacheSize, HttpCacheStorage fileStreamCacheStorage) {
         this.leaderUrl = leaderUrl;
         this.statusExpiry = statusExpiry;
         this.connectionTimeout = connectionTimeout;
+        this.readTimeout = readTimeout;
+        this.connectionRequestTimeout=connectionRequestTimeout;
         this.idleConnectionExpiry = idleConnectionExpiry;
         this.enableLookupVolumeCache = enableLookupVolumeCache;
         this.lookupVolumeCacheExpiry = lookupVolumeCacheExpiry;
@@ -95,9 +100,10 @@ public class Connection {
      */
     public void startup() {
         final RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(this.connectionTimeout)
-                .setSocketTimeout(connectionTimeout)
+                .setSocketTimeout(readTimeout)
                 // 一个connection可以有多个request
-                .setConnectionRequestTimeout(connectionTimeout).build();
+                .setConnectionRequestTimeout(connectionRequestTimeout)
+                .setConnectTimeout(connectionTimeout).build();
         // Create socket configuration
         SocketConfig socketConfig = SocketConfig.custom().setTcpNoDelay(true).setSoKeepAlive(true)
                 .setSoTimeout(connectionTimeout).build();
@@ -119,6 +125,8 @@ public class Connection {
             this.httpClient = HttpClients.custom().setConnectionManager(this.clientConnectionManager)
                     .setDefaultRequestConfig(requestConfig).build();
         }
+        this.statusHttpClient = HttpClients.custom().setConnectionManager(this.clientConnectionManager)
+                .setDefaultRequestConfig(requestConfig).build();
         initCache();
         this.pollClusterStatusThread.updateSystemStatus(true, true);
         this.pollClusterStatusThread.start();
@@ -334,6 +342,9 @@ public class Connection {
         ArrayList<MasterStatus> peers;
         final HttpGet request = new HttpGet(masterUrl + RequestPathStrategy.checkClusterStatus);
         final JsonResponse jsonResponse = fetchJsonResultByRequest(request);
+        if(jsonResponse==null){
+            throw new IOException("read cluster status failed");
+        }
         Map map = objectMapper.readValue(jsonResponse.json, Map.class);
 
         // 不应该直接指定leader,应该先判断是否leader
@@ -474,7 +485,7 @@ public class Connection {
         JsonResponse jsonResponse = null;
 
         try {
-            response = httpClient.execute(request, HttpClientContext.create());
+            response = statusHttpClient.execute(request, HttpClientContext.create());
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 jsonResponse = new JsonResponse(EntityUtils.toString(entity), response.getStatusLine().getStatusCode());

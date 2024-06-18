@@ -44,6 +44,8 @@ public class FileSource implements InitializingBean, DisposableBean {
             if (this.connection == null) {
                 this.connection = new Connection(ConnectionUtil.convertUrlWithScheme(serverUrl),
                         this.connectionProperties.getConnectionTimeout(),
+                        this.connectionProperties.getReadTimeout(),
+                        this.connectionProperties.getConnectionRequestTimeout(),
                         this.connectionProperties.getStatusExpiry(),
                         this.connectionProperties.getIdleConnectionExpiry(),
                         this.connectionProperties.getMaxConnection(),
