@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>net.anumbrella.seaweedfs</groupId>
+  <groupId>io.github.doraemonandrat</groupId>
   <artifactId>seaweedfs-java-client</artifactId>
   <version>0.0.4.RELEASE</version>
   <packaging>jar</packaging>
@@ -24,9 +24,8 @@
   </licenses>
 
   <scm>
-    <url>https://github.com/Shuyun123/seaweedfs-java-client</url>
-    <connection>git@github.com:Shuyun123/seaweedfs-java-client.git</connection>
-    <developerConnection>http://blog.anumbrella.net</developerConnection>
+    <url>https://github.com/DoraemonAndRat/seaweedfs-java-client/tree/master</url>
+    <connection>git@github.com:DoraemonAndRat/seaweedfs-java-client.git</connection>
   </scm>
 
   <developers>
@@ -34,6 +33,13 @@
       <name>anumbrella</name>
       <email>1197173684@qq.com</email>
       <url>http://blog.anumbrella.net</url>
+      <organizationUrl>https://github.com/Shuyun123/seaweedfs-java-client</organizationUrl>
+      <roles>
+        <role>founder</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>DoraemonAndRat</name>
     </developer>
   </developers>
 
