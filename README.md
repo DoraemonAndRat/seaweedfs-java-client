@@ -1,12 +1,25 @@
 # SeaweedFS Client For Java
 
-[![Maven Central](http://img.shields.io/badge/maven_central-0.0.4.RELEASE-brightgreen.svg)](https://search.maven.org/#artifactdetails%7Corg.lokra.seaweedfs%7Cseaweedfs-client%7C0.7.3.RELEASE%7Cjar)
-[![GitHub Release](http://img.shields.io/badge/Release-0.0.4.RELEASE-brightgreen.svg)](https://github.com/lokra-platform/seaweedfs-client/releases/tag/0.7.3.RELEASE)
+[![Maven Central](http://img.shields.io/badge/maven_central-0.0.4.1.RELEASE-brightgreen.svg)](https://search.maven.org/#artifactdetails%7Corg.lokra.seaweedfs%7Cseaweedfs-client%7C0.7.3.RELEASE%7Cjar)
+[![GitHub Release](http://img.shields.io/badge/Release-0.0.4.1.RELEASE-brightgreen.svg)](https://github.com/lokra-platform/seaweedfs-client/releases/tag/0.7.3.RELEASE)
 [![Apache license](https://img.shields.io/badge/license-Apache-blue.svg)](http://opensource.org/licenses/Apache)
 
+# Note:
 
+Forked from https://github.com/Shuyun123/seaweedfs-java-client.
+
+Currently only support the old version of SeaweedFS.
 
 # Quick Start
+
+##### Add dependency
+```xml
+<dependency>
+    <groupId>io.github.doraemonandrat</groupId>
+    <artifactId>seaweedfs-java-client</artifactId>
+    <version>0.0.4.1.RELEASE</version>
+</dependency>
+```
 
 ##### Create a connection manager
 ```java
