@@ -268,7 +268,6 @@ public class Connection {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
                 log.error("unable connect to the seaweedfs core leader");
             }
 
@@ -322,7 +321,7 @@ public class Connection {
                 if (responseMap.get("Leader") != null) {
                     result = ConnectionUtil.convertUrlWithScheme((String) responseMap.get("Leader"));
 
-                    if (ConnectionUtil.checkUriAlive(this.httpClient, result))
+                    if (ConnectionUtil.checkUriAlive(this.statusHttpClient, result))
                         return result;
                 }
             }
